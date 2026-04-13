@@ -64,7 +64,7 @@ export default function DemoVideoPage({ onNavigate }) {
             /* Replace this src with your actual YouTube/Loom video ID */
             <iframe
               className="absolute inset-0 w-full h-full"
-              src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+              src=src="https://www.loom.com/embed/93d2393c61544c7cbbf9e97f9e516c62"
               title="ValleyNXT Demo"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
