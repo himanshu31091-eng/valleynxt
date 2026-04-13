@@ -15,7 +15,7 @@ function saveToHistory(result) {
 
 export default function ResultsPage({ result, onNewEval, onNavigate }) {
   useEffect(() => {
-    if (result) saveToHistory(result);
+    if (result && !result.fromHistory) saveToHistory(result);
   }, [result]);
 
   if (!result) {

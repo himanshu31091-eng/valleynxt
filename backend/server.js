@@ -38,7 +38,12 @@ Respond ONLY with a valid JSON object — no markdown, no explanation, no backti
   "funding_recommendation": "<2-3 sentence specific funding advice>",
   "key_risks": ["<risk 1>", "<risk 2>", "<risk 3>"],
   "growth_opportunities": ["<opportunity 1>", "<opportunity 2>", "<opportunity 3>"],
-  "final_summary": "<2-3 sentence VC-style investment thesis or pass rationale>"
+  "final_summary": "<2-3 sentence VC-style investment thesis or pass rationale>",
+  "dimension_gaps": {
+    "innovation": "<1-2 sentence specific weakness for this startup's innovation, or null if innovation_score >= 7>",
+    "market_potential": "<1-2 sentence specific weakness for this startup's market opportunity, or null if market_potential >= 7>",
+    "scalability": "<1-2 sentence specific weakness for this startup's scalability, or null if scalability >= 7>"
+  }
 }`;
 
   try {

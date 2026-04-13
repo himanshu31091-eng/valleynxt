@@ -7,7 +7,18 @@ export default function HistoryPage({ onViewResult }) {
   useEffect(() => {
     try {
       const saved = JSON.parse(localStorage.getItem("valleynxt_history") || "[]");
-      setHistory(saved.reverse());
+      // Remove duplicates created by the old bug (same startup + founder + scores)
+      const seen = new Set();
+      const deduped = saved.filter((item) => {
+        const key = `${item.startup}|${item.founder}|${item.data.innovation_score}|${item.data.market_potential}|${item.data.scalability}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      if (deduped.length !== saved.length) {
+        localStorage.setItem("valleynxt_history", JSON.stringify(deduped));
+      }
+      setHistory(deduped.reverse());
     } catch {
       setHistory([]);
     }

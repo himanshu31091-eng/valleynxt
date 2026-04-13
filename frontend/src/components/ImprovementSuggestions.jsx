@@ -58,10 +58,12 @@ const IMPROVEMENT_PROMPTS = {
   },
 };
 
-function SuggestionSection({ type, data }) {
+function SuggestionSection({ type, data, aiGap, dynamicItems }) {
   const [open, setOpen] = useState(false);
   const info = IMPROVEMENT_PROMPTS[type];
   if (!info) return null;
+
+  const suggestions = dynamicItems || info.suggestions;
 
   return (
     <div className={`border rounded-xl overflow-hidden mb-3 ${info.color}`}>
@@ -76,7 +78,7 @@ function SuggestionSection({ type, data }) {
               {info.title}
             </div>
             <div className={`text-[11px] mt-0.5 ${info.titleColor} opacity-70`}>
-              {info.suggestions.length} specific improvements identified
+              {suggestions.length} specific improvements identified
             </div>
           </div>
         </div>
@@ -91,8 +93,14 @@ function SuggestionSection({ type, data }) {
 
       {open && (
         <div className="px-5 pb-5 border-t border-black/8">
+          {aiGap && (
+            <div className="mt-4 mb-3 bg-white border border-black/8 rounded-xl px-4 py-3">
+              <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-1">AI-Identified Issue</div>
+              <p className="text-[12px] text-[#0a0a12] leading-relaxed">{aiGap}</p>
+            </div>
+          )}
           <div className="flex flex-col gap-3 mt-4">
-            {info.suggestions.map((s, i) => (
+            {suggestions.map((s, i) => (
               <div key={i} className="bg-white rounded-xl p-4 border border-black/5">
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-[#1a1a2e] flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -147,6 +155,16 @@ export default function ImprovementSuggestions({ data }) {
     );
   }
 
+  const gaps = data.dimension_gaps || {};
+
+  // Build dynamic risk suggestions from AI-returned key_risks
+  const dynamicRiskItems = data.key_risks?.length
+    ? data.key_risks.map((risk) => ({
+        issue: risk,
+        fix: "Address this risk proactively — build a clear mitigation plan and communicate it transparently to investors.",
+      }))
+    : null;
+
   return (
     <div className="mb-5 fade-in-up">
       {/* Header */}
@@ -168,23 +186,40 @@ export default function ImprovementSuggestions({ data }) {
           </div>
         </div>
         <p className="text-[12px] text-white/50 leading-relaxed">
-          Based on the evaluation, we identified specific weaknesses in your startup. 
+          Based on the evaluation, we identified specific weaknesses in your startup.
           Click each section below to see the exact issues and how to fix them.
         </p>
       </div>
 
       {/* Suggestion sections */}
       {issues.includes("innovation") && (
-        <SuggestionSection type="innovation" data={data} />
+        <SuggestionSection
+          type="innovation"
+          data={data}
+          aiGap={gaps.innovation || null}
+        />
       )}
       {issues.includes("market_potential") && (
-        <SuggestionSection type="market_potential" data={data} />
+        <SuggestionSection
+          type="market_potential"
+          data={data}
+          aiGap={gaps.market_potential || null}
+        />
       )}
       {issues.includes("scalability") && (
-        <SuggestionSection type="scalability" data={data} />
+        <SuggestionSection
+          type="scalability"
+          data={data}
+          aiGap={gaps.scalability || null}
+        />
       )}
       {issues.includes("risk") && (
-        <SuggestionSection type="risk" data={data} />
+        <SuggestionSection
+          type="risk"
+          data={data}
+          aiGap={null}
+          dynamicItems={dynamicRiskItems}
+        />
       )}
     </div>
   );
