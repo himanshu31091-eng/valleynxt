@@ -3,6 +3,7 @@ import ScoreCard from "../components/ScoreCard";
 import InsightCard from "../components/InsightCard";
 import RiskBadge from "../components/RiskBadge";
 import { exportToPDF } from "../services/exportPDF";
+import ImprovementSuggestions from "../components/ImprovementSuggestions";
 
 function saveToHistory(result) {
   try {
@@ -14,7 +15,7 @@ function saveToHistory(result) {
 
 export default function ResultsPage({ result, onNewEval, onNavigate }) {
   useEffect(() => {
-    if (result && !result.fromHistory) saveToHistory(result);
+    if (result) saveToHistory(result);
   }, [result]);
 
   if (!result) {
@@ -141,6 +142,9 @@ export default function ResultsPage({ result, onNewEval, onNavigate }) {
           </ul>
         </InsightCard>
       </div>
+
+      {/* Improvement Suggestions */}
+      <ImprovementSuggestions data={d} />
 
       {/* VC Summary */}
       <div className="bg-[#1a1a2e] rounded-2xl px-8 py-7 fade-in-up">
