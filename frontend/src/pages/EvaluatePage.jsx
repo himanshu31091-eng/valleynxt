@@ -26,7 +26,7 @@ const EMPTY = {
 };
 
 const INPUT_CLS =
-  "bg-[#f5f4f0] dark:bg-[#0d0d1a] border border-black/10 dark:border-white/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] dark:text-white placeholder-[#7a7a96] dark:placeholder-[#5a5a7a] outline-none focus:border-[#c9a84c] focus:bg-white dark:focus:bg-[#1e1e32] focus:ring-2 focus:ring-[#c9a84c]/10 transition-all duration-150 w-full";
+  "bg-[#f5f4f0] border border-black/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] placeholder-[#7a7a96] outline-none focus:border-[#c9a84c] focus:bg-white focus:ring-2 focus:ring-[#c9a84c]/10 transition-all duration-150 w-full";
 
 const LOADING_STEPS = [
   "Parsing startup fundamentals...",
@@ -83,11 +83,11 @@ export default function EvaluatePage({ onResult, initialDemo }) {
   if (loading) {
     return (
       <div className="p-8 flex flex-col items-center justify-center min-h-[480px]">
-        <div className="w-12 h-12 border-2 border-black/8 dark:border-white/10 border-t-[#c9a84c] rounded-full spinner mb-6" />
-        <div className="font-syne font-bold text-[18px] text-[#0a0a12] dark:text-white mb-2">
+        <div className="w-12 h-12 border-2 border-black/8 border-t-[#c9a84c] rounded-full spinner mb-6" />
+        <div className="font-syne font-bold text-[18px] text-[#0a0a12] mb-2">
           Analyzing with AI...
         </div>
-        <div className="text-[13px] text-[#7a7a96] dark:text-[#8888aa] mb-8">
+        <div className="text-[13px] text-[#7a7a96] mb-8">
           Our VC model is running a full evaluation
         </div>
         <div className="w-full max-w-sm space-y-2">
@@ -95,9 +95,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
             <div
               key={step}
               className={`flex items-center gap-3 text-[12px] transition-all duration-300 ${
-                i <= loadingStep
-                  ? "text-[#0a0a12] dark:text-white"
-                  : "text-[#7a7a96]/40 dark:text-white/20"
+                i <= loadingStep ? "text-[#0a0a12]" : "text-[#7a7a96]/40"
               }`}
             >
               <div
@@ -106,7 +104,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
                     ? "bg-emerald-500"
                     : i === loadingStep
                     ? "bg-[#c9a84c]"
-                    : "bg-[#eeecea] dark:bg-[#262640]"
+                    : "bg-[#eeecea]"
                 }`}
               >
                 {i < loadingStep ? (
@@ -134,17 +132,17 @@ export default function EvaluatePage({ onResult, initialDemo }) {
   return (
     <div className="p-8">
       <div className="mb-7">
-        <h1 className="font-syne font-bold text-[24px] text-[#0a0a12] dark:text-white tracking-tight mb-1.5">
+        <h1 className="font-syne font-bold text-[24px] text-[#0a0a12] tracking-tight mb-1.5">
           Evaluate a Startup
         </h1>
-        <p className="text-[13px] text-[#7a7a96] dark:text-[#8888aa]">
+        <p className="text-[13px] text-[#7a7a96]">
           Submit details for AI-powered VC-grade analysis
         </p>
       </div>
 
-      <div className="bg-white dark:bg-[#1a1a2e] rounded-2xl border border-black/5 dark:border-white/8 p-8 max-w-2xl">
+      <div className="bg-white rounded-2xl border border-black/5 p-8 max-w-2xl">
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/50 text-red-800 dark:text-red-400 rounded-xl p-4 text-[13px] mb-6 flex items-start gap-3">
+          <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 text-[13px] mb-6 flex items-start gap-3">
             <svg
               className="flex-shrink-0 mt-0.5"
               width="14"
@@ -164,7 +162,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
         <div className="grid grid-cols-2 gap-5">
           {/* Row 1 */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Startup Name
             </label>
             <input
@@ -175,7 +173,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Founder Name
             </label>
             <input
@@ -188,7 +186,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
 
           {/* Problem */}
           <div className="col-span-2 flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Problem Statement
             </label>
             <textarea
@@ -202,7 +200,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
 
           {/* Solution */}
           <div className="col-span-2 flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Solution
             </label>
             <textarea
@@ -216,7 +214,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
 
           {/* Market */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Target Market
             </label>
             <input
@@ -229,7 +227,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
 
           {/* Model */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Business Model
             </label>
             <input
@@ -242,7 +240,7 @@ export default function EvaluatePage({ onResult, initialDemo }) {
 
           {/* Stage */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] dark:text-[#a0a0c0] tracking-wide uppercase">
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
               Stage
             </label>
             <div className="relative">
@@ -278,10 +276,10 @@ export default function EvaluatePage({ onResult, initialDemo }) {
         </div>
 
         {/* Actions */}
-        <div className="mt-8 flex items-center gap-3 pt-6 border-t border-black/5 dark:border-white/8">
+        <div className="mt-8 flex items-center gap-3 pt-6 border-t border-black/5">
           <button
             onClick={handleSubmit}
-            className="bg-[#1a1a2e] hover:bg-[#262640] dark:bg-gold dark:hover:bg-gold-light dark:text-navy text-white font-syne font-bold text-[13px] tracking-wide px-7 py-3.5 rounded-lg transition-all duration-200 hover:-translate-y-px inline-flex items-center gap-2 shadow-sm"
+            className="bg-[#1a1a2e] hover:bg-[#262640] text-white font-syne font-bold text-[13px] tracking-wide px-7 py-3.5 rounded-lg transition-all duration-200 hover:-translate-y-px inline-flex items-center gap-2 shadow-sm"
           >
             <svg
               width="14"
@@ -298,13 +296,13 @@ export default function EvaluatePage({ onResult, initialDemo }) {
           </button>
           <button
             onClick={() => { setForm(DEMO); setError(null); }}
-            className="text-[#7a7a96] dark:text-[#8888aa] hover:text-[#3a3a52] dark:hover:text-white text-[12px] px-4 py-3 rounded-lg border border-black/10 dark:border-white/10 hover:border-[#c9a84c] dark:hover:border-[#c9a84c] transition-all duration-150"
+            className="text-[#7a7a96] hover:text-[#3a3a52] text-[12px] px-4 py-3 rounded-lg border border-black/10 hover:border-[#c9a84c] transition-all duration-150"
           >
             Load Sample Startup
           </button>
           <button
             onClick={() => { setForm(EMPTY); setError(null); }}
-            className="text-[#7a7a96] dark:text-[#8888aa] hover:text-[#3a3a52] dark:hover:text-white text-[12px] px-4 py-3 rounded-lg transition-all duration-150 ml-auto"
+            className="text-[#7a7a96] hover:text-[#3a3a52] text-[12px] px-4 py-3 rounded-lg transition-all duration-150 ml-auto"
           >
             Clear
           </button>

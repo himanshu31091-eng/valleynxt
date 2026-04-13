@@ -61,7 +61,7 @@ export default function LandingPage({ onNavigate, onLoadDemo }) {
               Evaluate a Startup
             </button>
             <button
-              onClick={onLoadDemo}
+              onClick={() => { onLoadDemo(); onNavigate("form"); }}
               className="text-white/60 hover:text-white text-[13px] px-6 py-3.5 rounded-lg border border-white/15 hover:border-white/35 transition-all duration-150"
             >
               Load Demo →
@@ -77,12 +77,12 @@ export default function LandingPage({ onNavigate, onLoadDemo }) {
           { num: "<30", unit: "s", label: "Evaluation time" },
           { num: "8", unit: "", label: "Investment signals analyzed" },
         ].map((s) => (
-          <div key={s.label} className="bg-white dark:bg-[#1a1a2e] rounded-xl border border-black/5 dark:border-white/8 p-5">
-            <div className="font-syne font-bold text-[28px] text-[#0a0a12] dark:text-white mb-1">
+          <div key={s.label} className="bg-white rounded-xl border border-black/5 p-5">
+            <div className="font-syne font-bold text-[28px] text-[#0a0a12] mb-1">
               {s.num}
               <span className="text-[18px] text-gold font-normal">{s.unit}</span>
             </div>
-            <div className="text-[12px] text-[#7a7a96] dark:text-[#8888aa]">{s.label}</div>
+            <div className="text-[12px] text-[#7a7a96]">{s.label}</div>
           </div>
         ))}
       </div>
@@ -90,14 +90,14 @@ export default function LandingPage({ onNavigate, onLoadDemo }) {
       {/* Features */}
       <div className="grid grid-cols-3 gap-3">
         {FEATURES.map((f) => (
-          <div key={f.title} className="bg-white dark:bg-[#1a1a2e] rounded-xl border border-black/5 dark:border-white/8 p-6">
-            <div className="w-9 h-9 rounded-lg bg-navy dark:bg-[#0d0d1a] flex items-center justify-center mb-4">
+          <div key={f.title} className="bg-white rounded-xl border border-black/5 p-6">
+            <div className="w-9 h-9 rounded-lg bg-navy flex items-center justify-center mb-4">
               {f.icon}
             </div>
-            <div className="font-syne font-semibold text-[14px] text-[#0a0a12] dark:text-white mb-2">
+            <div className="font-syne font-semibold text-[14px] text-[#0a0a12] mb-2">
               {f.title}
             </div>
-            <div className="text-[12px] text-[#7a7a96] dark:text-[#8888aa] leading-relaxed">{f.desc}</div>
+            <div className="text-[12px] text-[#7a7a96] leading-relaxed">{f.desc}</div>
           </div>
         ))}
       </div>

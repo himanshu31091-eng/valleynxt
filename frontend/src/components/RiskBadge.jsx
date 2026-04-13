@@ -1,9 +1,9 @@
 import React from "react";
 
 const RISK_STYLES = {
-  Low: "bg-emerald-50 text-emerald-800 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50",
-  Medium: "bg-amber-50 text-amber-800 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/50",
-  High: "bg-red-50 text-red-800 border-red-200 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50",
+  Low: "bg-emerald-50 text-emerald-800 border-emerald-200",
+  Medium: "bg-amber-50 text-amber-800 border-amber-200",
+  High: "bg-red-50 text-red-800 border-red-200",
 };
 
 const RISK_DOT = {
