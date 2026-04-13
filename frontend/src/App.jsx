@@ -21,7 +21,7 @@ export default function App() {
 
   const handleNewEval = () => { setLoadDemo(false); setPage("form"); };
 
-  const handleViewHistoryResult = (item) => { setResult(item); setPage("results"); };
+ const handleViewHistoryResult = (item) => { setResult({ ...item, fromHistory: true }); setPage("results"); };
 
   return (
     <div className="flex min-h-screen bg-[#f5f4f0]">
