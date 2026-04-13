@@ -43,8 +43,8 @@ Respond ONLY with a valid JSON object — no markdown, no explanation, no backti
 
   try {
     const message = await client.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 2048,
+      model: "claude-opus-4-5",
+      max_tokens: 1024,
       messages: [{ role: "user", content: prompt }],
     });
 
