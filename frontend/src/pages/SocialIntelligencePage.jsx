@@ -22,26 +22,20 @@ const STRENGTH_STYLES = {
   Weak: "bg-red-50 text-red-700 border-red-200",
 };
 
-function ScoreRing({ score, label, color }) {
+function ScoreRing({ score, label }) {
   const pct = score * 10;
   const radius = 28;
   const circ = 2 * Math.PI * radius;
   const dash = (pct / 100) * circ;
   const strokeColor = score >= 7 ? "#059669" : score >= 5 ? "#c9a84c" : "#ef4444";
-
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="relative w-20 h-20">
         <svg width="80" height="80" viewBox="0 0 80 80">
           <circle cx="40" cy="40" r={radius} fill="none" stroke="#eeecea" strokeWidth="5" />
-          <circle
-            cx="40" cy="40" r={radius} fill="none"
-            stroke={strokeColor} strokeWidth="5"
-            strokeDasharray={`${dash} ${circ}`}
-            strokeLinecap="round"
-            transform="rotate(-90 40 40)"
-            style={{ transition: "stroke-dasharray 1s ease" }}
-          />
+          <circle cx="40" cy="40" r={radius} fill="none" stroke={strokeColor} strokeWidth="5"
+            strokeDasharray={`${dash} ${circ}`} strokeLinecap="round"
+            transform="rotate(-90 40 40)" style={{ transition: "stroke-dasharray 1s ease" }} />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="font-syne font-bold text-[18px] text-[#0a0a12] leading-none">{score}</span>
@@ -62,16 +56,12 @@ export default function SocialIntelligencePage() {
   const [error, setError] = useState(null);
 
   const handleScan = async () => {
-    if (!startupName.trim()) {
-      setError("Please enter a startup name.");
-      return;
-    }
+    if (!startupName.trim()) { setError("Please enter a startup name."); return; }
     setError(null);
     setResult(null);
     setScanning(true);
     setCurrentStep(0);
 
-    // Animate steps
     for (let i = 0; i < SCAN_STEPS.length; i++) {
       await new Promise((r) => setTimeout(r, 600));
       setCurrentStep(i + 1);
@@ -100,13 +90,7 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
   "overall_social_score": <number 5-9>
 }`;
 
-      const response = await fetch("/api/social-scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-
-      let json;const response = await fetch("https://api.anthropic.com/v1/messages", {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -117,17 +101,11 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
       });
 
       const data = await response.json();
-      const rawText = data.content.map(b => b.text || "").join("");
+      const rawText = data.content.map((b) => b.text || "").join("");
       const cleaned = rawText.replace(/```json|```/g, "").trim();
       const parsed = JSON.parse(cleaned);
       setResult({ ...parsed, startupName });
-      try {
-        json = await response.json();
-      } catch {
-        throw new Error("Server is unavailable. Please ensure the backend is running and try again.");
-      }
-      if (!response.ok) throw new Error(json.error || "Scan failed");
-      setResult({ ...json.data, startupName });
+
     } catch (err) {
       setError(err.message || "Scan failed. Please try again.");
     } finally {
@@ -138,52 +116,27 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
   return (
     <div className="p-8">
       <div className="mb-7">
-        <h1 className="font-syne font-bold text-[24px] text-[#0a0a12] tracking-tight mb-1.5">
-          Social Intelligence
-        </h1>
-        <p className="text-[13px] text-[#7a7a96]">
-          Scan LinkedIn, Twitter, and news sources for founder credibility and market sentiment
-        </p>
+        <h1 className="font-syne font-bold text-[24px] text-[#0a0a12] tracking-tight mb-1.5">Social Intelligence</h1>
+        <p className="text-[13px] text-[#7a7a96]">Scan LinkedIn, Twitter, and news sources for founder credibility and market sentiment</p>
       </div>
 
-      {/* Input Card */}
       <div className="bg-white border border-black/5 rounded-2xl p-8 max-w-2xl mb-6">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
-              Startup Name
-            </label>
-            <input
-              value={startupName}
-              onChange={(e) => setStartupName(e.target.value)}
-              placeholder="e.g. MediSync AI"
-              className="bg-[#f5f4f0] border border-black/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] placeholder-[#7a7a96] outline-none focus:border-[#c9a84c] focus:bg-white focus:ring-2 focus:ring-[#c9a84c]/10 transition-all"
-            />
+            <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">Startup Name</label>
+            <input value={startupName} onChange={(e) => setStartupName(e.target.value)} placeholder="e.g. MediSync AI"
+              className="bg-[#f5f4f0] border border-black/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] placeholder-[#7a7a96] outline-none focus:border-[#c9a84c] focus:bg-white transition-all" />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[11px] font-medium text-[#3a3a52] tracking-wide uppercase">
-              LinkedIn URL
-              <span className="ml-2 text-[#7a7a96] normal-case font-normal">(optional)</span>
+              LinkedIn URL <span className="ml-2 text-[#7a7a96] normal-case font-normal">(optional)</span>
             </label>
-            <input
-              value={linkedinUrl}
-              onChange={(e) => setLinkedinUrl(e.target.value)}
-              placeholder="e.g. linkedin.com/company/medisync-ai"
-              className="bg-[#f5f4f0] border border-black/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] placeholder-[#7a7a96] outline-none focus:border-[#c9a84c] focus:bg-white focus:ring-2 focus:ring-[#c9a84c]/10 transition-all"
-            />
+            <input value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="e.g. linkedin.com/company/medisync-ai"
+              className="bg-[#f5f4f0] border border-black/10 rounded-lg px-3.5 py-2.5 text-[13px] text-[#0a0a12] placeholder-[#7a7a96] outline-none focus:border-[#c9a84c] focus:bg-white transition-all" />
           </div>
-
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 text-[12px]">
-              {error}
-            </div>
-          )}
-
-          <button
-            onClick={handleScan}
-            disabled={scanning}
-            className="bg-[#1a1a2e] hover:bg-[#262640] disabled:opacity-50 disabled:cursor-not-allowed text-white font-syne font-bold text-[13px] tracking-wide px-7 py-3.5 rounded-lg transition-all duration-200 hover:-translate-y-px inline-flex items-center gap-2 w-fit"
-          >
+          {error && <div className="bg-red-50 border border-red-200 text-red-800 rounded-xl p-3 text-[12px]">{error}</div>}
+          <button onClick={handleScan} disabled={scanning}
+            className="bg-[#1a1a2e] hover:bg-[#262640] disabled:opacity-50 disabled:cursor-not-allowed text-white font-syne font-bold text-[13px] tracking-wide px-7 py-3.5 rounded-lg transition-all duration-200 hover:-translate-y-px inline-flex items-center gap-2 w-fit">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8">
               <circle cx="8" cy="8" r="3" />
               <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.5 1.5M11 11l1.5 1.5M3.5 12.5L5 11M11 5l1.5-1.5" strokeLinecap="round" />
@@ -193,35 +146,19 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
         </div>
       </div>
 
-      {/* Scanning Animation */}
       {scanning && (
         <div className="bg-white border border-black/5 rounded-2xl p-8 max-w-2xl mb-6 fade-in-up">
           <div className="flex flex-col items-center mb-6">
             <div className="w-12 h-12 border-2 border-black/8 border-t-[#c9a84c] rounded-full spinner mb-4" />
-            <div className="font-syne font-bold text-[16px] text-[#0a0a12] mb-1">
-              Scanning Social Profiles...
-            </div>
-            <div className="text-[12px] text-[#7a7a96]">
-              Analyzing online presence for {startupName}
-            </div>
+            <div className="font-syne font-bold text-[16px] text-[#0a0a12] mb-1">Scanning Social Profiles...</div>
+            <div className="text-[12px] text-[#7a7a96]">Analyzing online presence for {startupName}</div>
           </div>
           <div className="flex flex-col gap-2">
             {SCAN_STEPS.map((step, i) => (
-              <div
-                key={i}
-                className={`flex items-center gap-3 text-[12px] transition-all duration-300 ${
-                  i < currentStep ? "text-[#0a0a12]" : "text-[#7a7a96]/40"
-                }`}
-              >
-                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
-                  i < currentStep - 1 ? "bg-emerald-500"
-                  : i === currentStep - 1 ? "bg-[#c9a84c]"
-                  : "bg-[#eeecea]"
-                }`}>
+              <div key={i} className={`flex items-center gap-3 text-[12px] transition-all duration-300 ${i < currentStep ? "text-[#0a0a12]" : "text-[#7a7a96]/40"}`}>
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${i < currentStep - 1 ? "bg-emerald-500" : i === currentStep - 1 ? "bg-[#c9a84c]" : "bg-[#eeecea]"}`}>
                   {i < currentStep - 1 ? (
-                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                      <path d="M1.5 4l2 2 3-3" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+                    <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4l2 2 3-3" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                   ) : i === currentStep - 1 ? (
                     <div className="w-1.5 h-1.5 rounded-full bg-white" />
                   ) : null}
@@ -233,38 +170,24 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
         </div>
       )}
 
-      {/* Results */}
       {result && !scanning && (
         <div className="max-w-4xl fade-in-up">
-          {/* Header */}
           <div className="bg-[#1a1a2e] rounded-2xl px-8 py-6 mb-5 flex items-center justify-between">
             <div>
-              <div className="text-[10px] tracking-[2px] uppercase text-[#c9a84c] mb-1">
-                Social Intelligence Report
-              </div>
-              <div className="font-syne font-extrabold text-[22px] text-white tracking-tight">
-                {result.startupName}
-              </div>
-              <div className="text-[12px] text-white/40 mt-1">
-                Scanned across LinkedIn · Twitter · News · {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-              </div>
+              <div className="text-[10px] tracking-[2px] uppercase text-[#c9a84c] mb-1">Social Intelligence Report</div>
+              <div className="font-syne font-extrabold text-[22px] text-white tracking-tight">{result.startupName}</div>
+              <div className="text-[12px] text-white/40 mt-1">Scanned across LinkedIn · Twitter · News · {new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
             </div>
             <div className="text-right">
-              <div className="text-[10px] tracking-[2px] uppercase text-[#c9a84c] mb-1">
-                Overall Score
-              </div>
+              <div className="text-[10px] tracking-[2px] uppercase text-[#c9a84c] mb-1">Overall Score</div>
               <div className="font-syne font-extrabold text-[48px] text-white leading-none">
-                {result.overall_social_score}
-                <span className="text-[16px] text-white/30 font-light">/10</span>
+                {result.overall_social_score}<span className="text-[16px] text-white/30 font-light">/10</span>
               </div>
             </div>
           </div>
 
-          {/* Score Rings */}
           <div className="bg-white border border-black/5 rounded-2xl p-6 mb-5">
-            <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-5">
-              Score Breakdown
-            </div>
+            <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-5">Score Breakdown</div>
             <div className="flex items-center justify-around flex-wrap gap-6">
               <ScoreRing score={result.founder_credibility_score} label="Founder Credibility" />
               <ScoreRing score={result.social_proof_score} label="Social Proof" />
@@ -272,7 +195,6 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
             </div>
           </div>
 
-          {/* Stats Row */}
           <div className="grid grid-cols-4 gap-3 mb-5">
             {[
               { label: "Market Sentiment", value: result.market_sentiment, badge: true, style: SENTIMENT_STYLES[result.market_sentiment] },
@@ -283,9 +205,7 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
               <div key={i} className="bg-white border border-black/5 rounded-xl p-4">
                 <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-2">{stat.label}</div>
                 {stat.badge ? (
-                  <span className={`inline-flex px-2.5 py-1 rounded-full text-[12px] font-semibold border font-syne ${stat.style}`}>
-                    {stat.value}
-                  </span>
+                  <span className={`inline-flex px-2.5 py-1 rounded-full text-[12px] font-semibold border font-syne ${stat.style}`}>{stat.value}</span>
                 ) : (
                   <div className="font-syne font-bold text-[22px] text-[#0a0a12]">{stat.value}</div>
                 )}
@@ -293,19 +213,16 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
             ))}
           </div>
 
-          {/* Sentiment + Signals */}
           <div className="grid grid-cols-2 gap-3 mb-5">
             <div className="bg-white border border-black/5 rounded-xl p-5">
               <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-3 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#c9a84c]" />
-                Sentiment Summary
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c9a84c]" />Sentiment Summary
               </div>
               <p className="text-[13px] text-[#3a3a52] leading-relaxed">{result.sentiment_summary}</p>
             </div>
             <div className="bg-white border border-black/5 rounded-xl p-5">
               <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-3 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                Positive Signals
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />Positive Signals
               </div>
               <ul className="flex flex-col gap-2">
                 {result.top_signals.map((s, i) => (
@@ -321,8 +238,7 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
             </div>
             <div className="bg-white border border-black/5 rounded-xl p-5 col-span-2">
               <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-3 flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                Risk Signals
+                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />Risk Signals
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {result.risk_signals.map((s, i) => (
@@ -338,11 +254,9 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
             </div>
           </div>
 
-          {/* Recent News */}
           <div className="bg-white border border-black/5 rounded-xl p-5 mb-5">
             <div className="text-[10px] tracking-[1.5px] uppercase text-[#7a7a96] mb-4 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c9a84c]" />
-              Recent News Mentions
+              <span className="w-1.5 h-1.5 rounded-full bg-[#c9a84c]" />Recent News Mentions
             </div>
             <div className="flex flex-col gap-3">
               {result.recent_news.map((news, i) => (
@@ -351,20 +265,16 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
                     <div className="font-syne font-semibold text-[13px] text-[#0a0a12] mb-1">{news.title}</div>
                     <div className="text-[11px] text-[#7a7a96]">{news.source} · {news.days_ago} days ago</div>
                   </div>
-                  <span className={`flex-shrink-0 text-[10px] font-semibold font-syne px-2.5 py-1 rounded-full border ${SENTIMENT_STYLES[news.sentiment]}`}>
-                    {news.sentiment}
-                  </span>
+                  <span className={`flex-shrink-0 text-[10px] font-semibold font-syne px-2.5 py-1 rounded-full border ${SENTIMENT_STYLES[news.sentiment]}`}>{news.sentiment}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Disclaimer */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
             <div className="flex items-start gap-3">
               <svg className="flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#92400e" strokeWidth="1.5">
-                <circle cx="7" cy="7" r="5.5" />
-                <path d="M7 4.5v3M7 9v.5" strokeLinecap="round" />
+                <circle cx="7" cy="7" r="5.5" /><path d="M7 4.5v3M7 9v.5" strokeLinecap="round" />
               </svg>
               <div className="text-[11px] text-amber-800 leading-relaxed">
                 <strong>Demo Mode:</strong> This social intelligence scan is AI-generated for demonstration purposes. Live LinkedIn and Twitter integration will be enabled in the production version after API access is confirmed.
