@@ -87,7 +87,10 @@ app.post("/api/social-scan", async (req, res) => {
       .join("");
 
     const cleaned = rawText.replace(/```json|```/g, "").trim();
-    const parsed = JSON.parse(cleaned);
+    // Extract the first JSON object in case the model adds extra prose
+    const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new SyntaxError("No JSON object found in AI response");
+    const parsed = JSON.parse(jsonMatch[0]);
     return res.json({ success: true, data: parsed });
   } catch (err) {
     console.error("Social scan error:", err.message);

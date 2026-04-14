@@ -106,7 +106,12 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
         body: JSON.stringify({ prompt }),
       });
 
-      const json = await response.json();
+      let json;
+      try {
+        json = await response.json();
+      } catch {
+        throw new Error("Server is unavailable. Please ensure the backend is running and try again.");
+      }
       if (!response.ok) throw new Error(json.error || "Scan failed");
       setResult({ ...json.data, startupName });
     } catch (err) {
