@@ -90,21 +90,14 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
   "overall_social_score": <number 5-9>
 }`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
+     const response = await fetch("/api/social-scan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 1500,
-          messages: [{ role: "user", content: prompt }],
-        }),
+        body: JSON.stringify({ prompt }),
       });
-
-      const data = await response.json();
-      const rawText = data.content.map((b) => b.text || "").join("");
-      const cleaned = rawText.replace(/```json|```/g, "").trim();
-      const parsed = JSON.parse(cleaned);
-      setResult({ ...parsed, startupName });
+      const json = await response.json();
+      if (!response.ok) throw new Error(json.error || "Scan failed");
+      setResult({ ...json.data, startupName });
 
     } catch (err) {
       setError(err.message || "Scan failed. Please try again.");
