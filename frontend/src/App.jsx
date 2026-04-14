@@ -7,6 +7,7 @@ import ResultsPage from "./pages/ResultsPage";
 import HistoryPage from "./pages/HistoryPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
 import DemoVideoPage from "./pages/DemoVideoPage";
+import SocialIntelligencePage from "./pages/SocialIntelligencePage";
 
 export default function App() {
   const [page, setPage] = useState("landing");
@@ -21,7 +22,7 @@ export default function App() {
 
   const handleNewEval = () => { setLoadDemo(false); setPage("form"); };
 
- const handleViewHistoryResult = (item) => { setResult({ ...item, fromHistory: true }); setPage("results"); };
+  const handleViewHistoryResult = (item) => { setResult(item); setPage("results"); };
 
   return (
     <div className="flex min-h-screen bg-[#f5f4f0]">
@@ -33,6 +34,7 @@ export default function App() {
           {page === "form" && <EvaluatePage onResult={handleResult} initialDemo={loadDemo} />}
           {page === "results" && <ResultsPage result={result} onNewEval={handleNewEval} onNavigate={handleNavigate} />}
           {page === "history" && <HistoryPage onViewResult={handleViewHistoryResult} />}
+          {page === "social" && <SocialIntelligencePage />}
           {page === "howitworks" && <HowItWorksPage onNavigate={handleNavigate} />}
           {page === "demo" && <DemoVideoPage onNavigate={handleNavigate} />}
         </div>

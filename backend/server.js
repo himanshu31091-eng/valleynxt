@@ -38,12 +38,7 @@ Respond ONLY with a valid JSON object — no markdown, no explanation, no backti
   "funding_recommendation": "<2-3 sentence specific funding advice>",
   "key_risks": ["<risk 1>", "<risk 2>", "<risk 3>"],
   "growth_opportunities": ["<opportunity 1>", "<opportunity 2>", "<opportunity 3>"],
-  "final_summary": "<2-3 sentence VC-style investment thesis or pass rationale>",
-  "dimension_gaps": {
-    "innovation": "<1-2 sentence specific weakness for this startup's innovation, or null if innovation_score >= 7>",
-    "market_potential": "<1-2 sentence specific weakness for this startup's market opportunity, or null if market_potential >= 7>",
-    "scalability": "<1-2 sentence specific weakness for this startup's scalability, or null if scalability >= 7>"
-  }
+  "final_summary": "<2-3 sentence VC-style investment thesis or pass rationale>"
 }`;
 
   try {
@@ -72,6 +67,34 @@ Respond ONLY with a valid JSON object — no markdown, no explanation, no backti
     return res
       .status(500)
       .json({ error: err.message || "AI evaluation failed." });
+  }
+});
+
+app.post("/api/social-scan", async (req, res) => {
+  const { prompt } = req.body;
+  if (!prompt) return res.status(400).json({ error: "Prompt is required." });
+
+  try {
+    const message = await client.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1500,
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    const rawText = message.content
+      .filter((b) => b.type === "text")
+      .map((b) => b.text)
+      .join("");
+
+    const cleaned = rawText.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(cleaned);
+    return res.json({ success: true, data: parsed });
+  } catch (err) {
+    console.error("Social scan error:", err.message);
+    if (err instanceof SyntaxError) {
+      return res.status(500).json({ error: "Failed to parse AI response. Please try again." });
+    }
+    return res.status(500).json({ error: err.message || "Social scan failed." });
   }
 });
 

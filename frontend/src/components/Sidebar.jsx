@@ -8,6 +8,7 @@ const NAV_MAIN = [
 
 const NAV_RESOURCES = [
   { id: "history", label: "History", icon: "history" },
+  { id: "social", label: "Social Intelligence", icon: "social" },
   { id: "howitworks", label: "How It Works", icon: "info" },
   { id: "demo", label: "Demo Video", icon: "video" },
 ];
@@ -18,7 +19,7 @@ function Icon({ type }) {
   if (type === "clock") return <svg {...props}><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>;
   if (type === "chart") return <svg {...props}><path d="M2 12l4-4 3 3 5-7"/></svg>;
   if (type === "history") return <svg {...props}><circle cx="8" cy="8" r="6"/><path d="M8 5v3l-2 2" strokeLinecap="round"/></svg>;
-  if (type === "info") return <svg {...props}><circle cx="8" cy="8" r="6"/><path d="M8 7v4M8 5v.5" strokeLinecap="round"/></svg>;
+  if (type === "social") return <svg {...props}><circle cx="5" cy="5" r="2"/><circle cx="11" cy="3" r="1.5"/><circle cx="11" cy="11" r="1.5"/><path d="M7 5.5l2.5-2M7 6.5l2.5 4" strokeLinecap="round"/></svg>;
   if (type === "video") return <svg {...props}><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M6.5 6l4 2-4 2V6z" fill="currentColor" stroke="none"/></svg>;
   return null;
 }

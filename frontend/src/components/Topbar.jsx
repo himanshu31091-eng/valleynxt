@@ -1,5 +1,5 @@
 import React from "react";
-const PAGE_TITLES = { landing:"Overview", form:"Evaluate Startup", results:"Deal Reports", history:"Evaluation History", howitworks:"How It Works", demo:"Demo Video" };
+const PAGE_TITLES = { landing:"Overview", form:"Evaluate Startup", results:"Deal Reports", history:"Evaluation History", social:"Social Intelligence", howitworks:"How It Works", demo:"Demo Video" };
 export default function Topbar({ activePage }) {
   return (
     <div className="bg-white border-b border-black/5 h-[60px] px-8 flex items-center justify-between sticky top-0 z-10">

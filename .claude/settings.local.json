@@ -9,7 +9,8 @@
       "Bash(awk '{print $5}')",
       "Bash(xargs -I{} taskkill //PID {} //F)",
       "Bash(curl:*)",
-      "Bash(start:*)"
+      "Bash(start:*)",
+      "Bash(xargs grep:*)"
     ]
   }
 }
