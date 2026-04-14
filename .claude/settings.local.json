@@ -10,7 +10,8 @@
       "Bash(xargs -I{} taskkill //PID {} //F)",
       "Bash(curl:*)",
       "Bash(start:*)",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
