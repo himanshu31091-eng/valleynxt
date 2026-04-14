@@ -15,3 +15,19 @@ export async function evaluateStartup(formData) {
 
   return json.data;
 }
+
+export async function socialScan(prompt) {
+  const response = await fetch(`${API_BASE}/api/social-scan`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt }),
+  });
+
+  const json = await response.json();
+
+  if (!response.ok) {
+    throw new Error(json.error || "Social scan failed. Please try again.");
+  }
+
+  return json.data;
+}

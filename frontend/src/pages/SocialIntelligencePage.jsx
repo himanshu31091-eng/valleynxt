@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { socialScan } from "../services/api";
 
 const SCAN_STEPS = [
   "Connecting to LinkedIn profile...",
@@ -90,14 +91,8 @@ Respond ONLY with a valid JSON object, no markdown, no backticks:
   "overall_social_score": <number 5-9>
 }`;
 
-     const response = await fetch("/api/social-scan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
-      });
-      const json = await response.json();
-      if (!response.ok) throw new Error(json.error || "Scan failed");
-      setResult({ ...json.data, startupName });
+      const data = await socialScan(prompt);
+      setResult({ ...data, startupName });
 
     } catch (err) {
       setError(err.message || "Scan failed. Please try again.");
